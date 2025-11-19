@@ -18,7 +18,7 @@
             --font-mono: 'Courier New', Courier, monospace;
         }
 
-        * {
+        * { 
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -45,10 +45,11 @@
             100% { box-shadow: 0 0 5px var(--primary); }
         }
 
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Floating Morphing Animation for Profile Image */
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
         }
 
         /* --- NAVIGATION --- */
@@ -150,9 +151,16 @@
             font-family: var(--font-mono);
         }
 
-        /* --- HOME SECTION --- */
+        /* --- HOME SECTION (UPDATED LAYOUT) --- */
         #home {
-            align-items: flex-start;
+            flex-direction: row; /* Desktop: Side by Side */
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .hero-text-container {
+            flex: 1;
             text-align: left;
         }
 
@@ -184,6 +192,30 @@
         .cta-buttons {
             display: flex;
             gap: 15px;
+        }
+
+        /* --- HERO IMAGE STYLES --- */
+        .hero-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-img {
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+            /* The curve magic: */
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+            animation: morph 8s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-img:hover {
+            transform: scale(1.05);
         }
 
         .btn {
@@ -421,8 +453,39 @@
         }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .hero-text h1 { font-size: 2.5rem; }
+        @media (max-width: 968px) {
+            #home {
+                flex-direction: column-reverse; /* Image on top or bottom? Let's put image on top for mobile feel, or bottom for info first. 'column-reverse' puts last element (img) on top? No, last element is img, column-reverse makes it first. */
+                /* Actually standard practice: Text First, then Image. But often Profile is nice on top. */
+                flex-direction: column; 
+                justify-content: center;
+                text-align: center;
+                padding-top: 100px;
+            }
+
+            .hero-text-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-image-container {
+                margin-bottom: 40px;
+                width: 100%;
+            }
+
+            .hero-img {
+                width: 250px;
+                height: 250px;
+            }
+
+            .hero-text h1 { font-size: 2.8rem; }
+            
+            .hero-location {
+                justify-content: center;
+            }
+
             .menu-btn { display: block; }
             
             .nav-links {
@@ -471,20 +534,29 @@
 
     <!-- HOME SECTION -->
     <section id="home">
-        <div class="hero-text">
-            <h2 class="hero-subtitle">Hi, I am</h2>
-            <h1>Sagar <span>Ghimire</span></h1>
-            <h2 class="hero-subtitle">Full-Stack Developer | Cybersecurity Enthusiast</h2>
+        <!-- Text Side -->
+        <div class="hero-text-container">
+            <div class="hero-text">
+                <h2 class="hero-subtitle">Hi, I am</h2>
+                <h1>Sagar <span>Ghimire</span></h1>
+                <h2 class="hero-subtitle">Full-Stack Developer | Cybersecurity Enthusiast</h2>
+            </div>
+            <div class="hero-location">
+                <span>📍 Kathmandu, Nepal</span>
+            </div>
+            <p style="max-width: 600px; color: var(--text-muted); margin-bottom: 30px;">
+                I build secure, scalable web applications using the MERN stack and explore the depths of cybersecurity through ethical hacking.
+            </p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">Check My Work</a>
+                <a href="#contact" class="btn btn-outline">Get In Touch</a>
+            </div>
         </div>
-        <div class="hero-location">
-            <span>📍 Kathmandu, Nepal</span>
-        </div>
-        <p style="max-width: 600px; color: var(--text-muted); margin-bottom: 30px;">
-            I build secure, scalable web applications using the MERN stack and explore the depths of cybersecurity through ethical hacking.
-        </p>
-        <div class="cta-buttons">
-            <a href="#projects" class="btn btn-primary">Check My Work</a>
-            <a href="#contact" class="btn btn-outline">Get In Touch</a>
+
+        <!-- Image Side -->
+        <div class="hero-image-container">
+            <!-- DUMMY IMAGE - Replace src with your URL -->
+            <img src="https://scontent.fktm14-1.fna.fbcdn.net/v/t39.30808-6/483103834_673383291893721_5079170947213617276_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=oRWu0b4mzPIQ7kNvwH9DjIx&_nc_oc=AdkBj8NeNW1Sc9qxE3F2BXCTkrv5lPv3zcgKSHO27b2SmBnnoVGyDOFmdgutHlaRqf8&_nc_zt=23&_nc_ht=scontent.fktm14-1.fna&_nc_gid=l3PH48m4gzDqgochxTiPbg&oh=00_Afi8-vlmHrknIFBL-pJnfPd309CZBN80QIshWxXN7jCFXg&oe=6923AD56" alt="Sagar Ghimire" class="hero-img">
         </div>
     </section>
 
@@ -680,9 +752,9 @@
             <div class="edu-card">
                 <h3 class="project-title">Certifications</h3>
                 <ul class="cert-list">
-                    <li>MERN Stack Development (Broadway Infosys)</li>
-                    <li>Cybersecurity & Ethical Hacking (CodeIT Nepal)</li>
-                    <li>PHP Web Development (Kantipur Institute)</li>
+                    <li>MERN Stack Development </li>
+                    <li>Cybersecurity & Ethical Hacking </li>
+                    <li>PHP Web Development </li>
                 </ul>
             </div>
 
